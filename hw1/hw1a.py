@@ -8,20 +8,25 @@ class Find:
         self.reader = csv.DictReader(file_obj,delimiter=',')
 
     def search(self,dictionary):
+        find = False
         for line in self.reader:
+            match = True
             dict_keys = dictionary.keys()
-            
             for key in dict_keys:
-                print key
-            #print dict_keys
-            #print dictionary[dict_keys[1]]
+                if (line.has_key(key) == False):
+                    sys.exit("Your input column name " + key +
+                                " is not a valid column name." + "\n" +
+                                "Make sure it is spelled correct "+
+                                "it is case sensitive!")
+                if (line[key] != dictionary[key]):
+                    match = False
+            if (match == True):
+                find = True
+                print line
 
+        if (find == False):
+            sys.exit("Done searching but find no match result")
 
-
-            #print line
-            print "hahahaha"
-            print dictionary
-            break
 
 
 
