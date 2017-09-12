@@ -1,48 +1,9 @@
-import csv
 import sys
-
-
-class Find:
-
-    def __init__(self,file_obj):
-        self.reader = csv.DictReader(file_obj,delimiter=',')
-
-    def search(self,dictionary):
-        find = False
-        for line in self.reader:
-            match = True
-            dict_keys = dictionary.keys()
-            for key in dict_keys:
-                if (line.has_key(key) == False):
-                    sys.exit("Your input column name " + key +
-                                " is not a valid column name." + "\n" +
-                                "Make sure it is spelled correct "+
-                                "it is case sensitive!")
-                if (line[key] != dictionary[key]):
-                    match = False
-            if (match == True):
-                find = True
-                print line
-
-        if (find == False):
-            sys.exit("Done searching but find no match result")
+import findClass
+import insertClass
 
 
 
-
-    #def csv_dict_reader(file_obj):
-        # Read a CSV file using csv.DictReader
-    #    reader = csv.DictReader(file_obj, delimiter=',')
-    #    for line in reader:
-            #print(line["first_name"]),
-            #print(line["last_name"])
-    #        print line['OrderID']
-    #        break
-
-
-
-#print 'Number of arguments:', len(sys.argv), 'arguments.'
-#print 'Argument List:', str(sys.argv)
 
 # exit the program if input arguments are invalid
 if (len(sys.argv)<4):
@@ -85,14 +46,41 @@ if (operation.lower() == "find".lower()):
     dictionary[tokens_last[0]] = tokens_last[1]
 
     with open(table.lower()+"s.csv") as f_obj:
-        f1 = Find(f_obj)
+        f1 = findClass.Find(f_obj)
         f1.search(dictionary)
 
+# INSERT
+else:
+    if (len(sys.argv)>4):
+        sys.exit("For insert operation, please do not leave any space "+
+                    "between entries")
 
+    if (sys.argv[3][0] != '(' or sys.argv[3][len(sys.argv[3])-1] != ')'):
+        sys.exit("Please make sure the inserted data is inside "+
+                    "the parentheses")
 
-test = {}
-test['hehe'] = 3
-test['haha'] = 2
+    dictionary = {}
+    word = sys.argv[3][1:len(sys.argv[3])-1]
+    tokens = word.split(",")
 
-#print test
-#print type(test)
+    if (table.lower() == "customer"):
+        if (len(tokens) != 11):
+            sys.exit("The customer table requires 11 entries ")
+
+        with open("customers.csv") as f_obj:
+            f1 = findClass.Find(f_obj)
+            if (f1.repeatItem(tokens[0],"CustomerID") == True):
+                sys.exit("This inserted data has a same ID as an existed data ")
+
+    if (table.lower() == "order"):
+        if (len(tokens) != 14):
+            sys.exit("The order table requires 11 entries ")
+
+        with open("orders.csv") as f_obj:
+            f1 = findClass.Find(f_obj)
+            if (f1.repeatItem(tokens[0],"OrderID") == True):
+                sys.exit("This inserted data has a same ID as an existed data ")
+
+    with open(table.lower()+"s.csv", 'a') as f_obj:
+        f1 = insertClass.Insert(f_obj)
+        f1.write(tokens)
