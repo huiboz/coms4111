@@ -1,8 +1,12 @@
+# COMS4111 hw1a section003
+# Huibo Zhao hz2480
+# Sep.13th.2017
+# This is the main program for executing "find"
+# and "insert" operation
+
 import sys
 import findClass
 import insertClass
-
-
 
 
 # exit the program if input arguments are invalid
@@ -74,7 +78,7 @@ else:
 
     if (table.lower() == "order"):
         if (len(tokens) != 14):
-            sys.exit("The order table requires 11 entries ")
+            sys.exit("The order table requires 14 entries ")
 
         with open("orders.csv") as f_obj:
             f1 = findClass.Find(f_obj)

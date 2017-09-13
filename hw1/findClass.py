@@ -1,3 +1,12 @@
+# COMS4111 hw1a section003
+# Huibo Zhao hz2480
+# Sep.13th.2017
+
+# The Find class uses csv library to load csv file
+# The search function is implemented for "find"
+# operation.
+# The repeatItem function is implemented for checking
+# if a given ID already exists in the table or not.
 import csv
 import sys
 
