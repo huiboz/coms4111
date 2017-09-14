@@ -1,5 +1,7 @@
 # hw1a_4111
 
+Environment: python 2.7.10
+
 accept "find" and "insert" database operation on .csv files
 
 hw1a.py, insertClass.py, findClass.py  Please put these three files into the same folder and run hw1a.py
