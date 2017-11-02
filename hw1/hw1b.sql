@@ -23,3 +23,13 @@ SELECT
 FROM
     customer
 ORDER BY lastname , firstname;
+
+
+
+CREATE TABLE IF NOT EXISTS Test (
+	ID1 int(10) NOT NULL,
+    ID2 int(10) NOT NULL,
+    PRIMARY KEY (ID1,ID2)
+);
+
+select * from Test;
