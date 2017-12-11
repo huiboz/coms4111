@@ -79,7 +79,6 @@ INSERT INTO `course_prereqs` VALUES ('COMSW4112','COMSW4111');
 #INSERT INTO Person (uni, last_name, first_name, type) VALUES ('s','zhao','huibo',"ss");
 #INSERT INTO Person VALUES ("1222",'a',"b","ss");
 #call insert_student("zhao", "huibo", "cs", 2016);
-#UPDATE PERSON    SET last_name = 'he1', first_name = 's', uni = 'ss'where PERSON.uni = 'AB1';
 #insert into student values("AB2","cs","2022");
 #update student set school = "cs", year = 2022 where uni = "AB1";
 #insert into faculty values("AB1",4,"cs","a");
