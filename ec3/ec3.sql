@@ -1,3 +1,4 @@
+/*
 DROP TABLE IF EXISTS `ec3_checking`;
 CREATE TABLE `ec3_checking` (
 `id_count` int(11) NOT NULL AUTO_INCREMENT,
@@ -163,13 +164,14 @@ select @rc;
 
 
 
-
-/*
-INSERT INTO `ec3_savings` (balance,minimum_balance) VALUES (300,500);
-INSERT INTO `ec3_savings` (balance,minimum_balance) VALUES (300,500);
-INSERT INTO `ec3_log` (sequence_number) VALUES (3);
-INSERT INTO `ec3_log` (sequence_number) VALUES (9);
+# test 4
+call transfer_commit("CH-16", "SV-1",225,@rc);
+select @rc;
 */
+
+# test 5:
+call transfer_commit("CH-19", "SV-1",900,@rc);
+select @rc;
 
 
 #call transfer_commit("V-15", "SV-1",100,@rc);
