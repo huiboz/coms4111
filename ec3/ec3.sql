@@ -19,7 +19,16 @@ PRIMARY KEY (`id_count`),
 UNIQUE KEY `id_count_UNIQUE` (`id_count`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
-
+DROP TABLE IF EXISTS `ec3_log`;
+CREATE TABLE `ec3_log` (
+`sequence_number` int(11) NOT NULL AUTO_INCREMENT,
+`source_id` varchar(12) DEFAULT NULL,
+`target_id` varchar(12) DEFAULT NULL,
+`amount` float DEFAULT NULL,
+`result_code` int DEFAULT NULL,
+`transfer_time` timestamp,
+PRIMARY KEY (`sequence_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 DROP TRIGGER IF EXISTS `trigger_insert_checking`;
 DELIMITER $$
@@ -56,7 +65,10 @@ INSERT INTO `ec3_checking` (balance,overdraft_limit) VALUES (300,500);
 INSERT INTO `ec3_checking` (balance,overdraft_limit) VALUES (300,500);
 INSERT INTO `ec3_savings` (balance,minimum_balance) VALUES (300,500);
 INSERT INTO `ec3_savings` (balance,minimum_balance) VALUES (300,500);
+INSERT INTO `ec3_log` (sequence_number) VALUES (3);
+INSERT INTO `ec3_log` (sequence_number) VALUES (9);
         
 select * from `ec3_checking`;
 select * from `ec3_savings`;
+select * from `ec3_log`;
 
