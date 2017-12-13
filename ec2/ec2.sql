@@ -1,5 +1,4 @@
 
-
 DROP TABLE IF EXISTS `base_table`;
 
 CREATE TABLE `base_table` (
