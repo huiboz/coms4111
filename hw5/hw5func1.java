@@ -3,6 +3,8 @@ package hw5;
 
 import redis.clients.jedis.Jedis;
 
+
+
 import java.util.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +18,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import redis.clients.jedis.BinaryJedis;
+import org.json.*;
+import javax.json.*;
 
 public class hw5func1 {
 
@@ -38,25 +43,11 @@ public class hw5func1 {
         return conn;
     }
 
-    public static void test1() {
-        Map < String, String > result;
-
-        //Connecting to Redis server on localhost 
-        Jedis jedis = new Jedis("localhost");
-        System.out.println("Connection to server sucessfully");
-
-        result = jedis.hgetAll("players:willite01");
-        System.out.println("Ted Williams = " + result);
-        // Get the stored data and print it 
-        System.out.println("Stored string in redis:: " + jedis.get("tutorialname"));
-        jedis.close();
-    }
-
-    private static JSONObject find_mysql_by_id(String id) {
+    private static Map<String,String> find_mysql_by_id(String id) {
         Connection conn = null;
         Statement stmt = null;
         ResultSet rs = null;
-        JSONObject obj = new JSONObject();
+        Map<String,String> map = new HashMap<String,String>();
         try {
             conn = getConnection();
             stmt = conn.createStatement();
@@ -70,16 +61,14 @@ public class hw5func1 {
             nameFirst = rs.getString("nameFirst");
             birthYear = rs.getString("birthYear");
             birthCountry = rs.getString("birthCountry");
-            System.out.println("playerID = " + playerID + ", last name = " + nameLast +
-                ", first name = " + nameFirst + ", birth year = " + birthYear + ", birth Country = " + birthCountry);
-            obj.put("playerID",playerID);
-            obj.put("nameLast",nameLast);
-            obj.put("nameFirst",nameFirst);
-            obj.put("birthYear",birthYear);
-            obj.put("birthCountry",birthCountry);
+            //System.out.println("playerID = " + playerID + ", last name = " + nameLast +
+            //    ", first name = " + nameFirst + ", birth year = " + birthYear + ", birth Country = " + birthCountry);
+            map.put("playerID",playerID);
+            map.put("nameLast",nameLast);
+            map.put("nameFirst",nameFirst);
+            map.put("birthYear",birthYear);
+            map.put("birthCountry",birthCountry);
 
-
-            System.out.print(obj.toString());
         } catch (SQLException ex) {
             // handle any errors
             System.out.println("SQLException: " + ex.getMessage());
@@ -107,14 +96,49 @@ public class hw5func1 {
                 stmt = null;
             }
         }
-        return obj;
+        return map;
+    }
+    
+    private static Map<String,String> find_redis_by_id(String id) {
+        Map < String, String > result;
+
+        //Connecting to Redis server on localhost 
+        Jedis jedis = new Jedis("localhost");
+        System.out.println("Connection to server sucessfully");
+        result = jedis.hgetAll("players:" + id);
+        jedis.close();
+        return result;
+    }
+    
+    private static void add_to_redis(String id, Map<String,String> data) {
+        Jedis jedis = new Jedis("localhost");
+        String result = jedis.hmset("players:"+id,data);
+        if (result.substring(0,2).equals("OK"))
+           System.out.println("Successfully add to redis!");
+    
+    }
+    
+    
+    private static Map<String,String> find_by_id(String id) {
+        Map<String, String> result;
+        
+        result = find_redis_by_id(id);
+        
+        if(result.isEmpty()) {
+           System.out.println("Will load data from MySQL to Redis..");
+           result = find_mysql_by_id(id);
+           add_to_redis(id,find_mysql_by_id(id));
+        } else {
+           System.out.println("Found data in Redis");
+        }
+           
+        return result;
+
+
     }
 
     public static void main(String[] args) {
-
-        find_mysql_by_id("aardsda01");
-        //test1();
-
+        System.out.println(find_by_id("napolmi01"));
     }
 
 }
